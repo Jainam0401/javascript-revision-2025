@@ -95,13 +95,15 @@ console.log(totalItemms);
 
 // const groups = {}
 
-const shipped = orders.filter(order=> order.status==="shipped")
-const map = new Set(orders.map(order => order.status))
-const delivered = orders.filter(order=> order.status==="delivered")
-const processing = orders.filter(order=> order.status==="processing")
-const groups = {
-    "shipped" :shipped,
-    "delivered": delivered,
-    "processing":processing
-}
-console.log(groups)
+const newGroups = orders.reduce( (acc, order)=>{
+  console.log("line 110",acc);
+  
+    acc[order.status] = acc[order.status] || [];
+    
+    acc[order.status].push(order);
+    console.log("line 113",acc);
+    return acc;
+
+
+},{})
+console.log(newGroups)

@@ -109,8 +109,43 @@ const data = [
 // You need to generate a report that breaks down the total spending for each customer across different membership tiers, and then categorize customers by their total spend.
 
 // - **Step 1**: Calculate the total spend for each customer across all orders.
+// {
+//   orderId: 201,
+//   customer: { id: 1, name: "Alice", membership: "Gold", email: "alice@example.com", phone: "+1234567890" },
+//   items: [
+//     { productId: 101, name: "Laptop", price: 1200, quantity: 1, category: "Electronics", discount: 100, totalPrice: 1100 },
+//     { productId: 102, name: "Mouse", price: 25, quantity: 2, category: "Accessories", discount: 5, totalPrice: 45 },
+//     { productId: 103, name: "Wireless Keyboard", price: 70, quantity: 1, category: "Accessories", discount: 10, totalPrice: 60 },
+//   ],
+//   payment: { method: "Credit Card", status: "Paid", transactionId: "TXN12345", date: "2023-12-01" },
+//   shipping: { status: "Shipped", method: "Express", date: "2023-12-02", trackingNumber: "TRACK1234" },
+//   date: "2023-12-01",
+//   location: "New York",
+//   notes: "Please ensure fast delivery due to the gift purpose.",
+//   billingAddress: { street: "123 Main St", city: "New York", state: "NY", postalCode: "10001" },
+//   deliveryAddress: { street: "123 Main St", city: "New York", state: "NY", postalCode: "10001" },
+// },
+const totalSpend = data.map( order=>{
+  return order.items.reduce((sum,product)=>sum + product.price * product.quantity - product.discount,0)
+})
+console.log(totalSpend);
+
 // - **Step 2**: Group customers by membership type.
+const membership = data.reduce((acc,order)=>
+  {acc[order.customer.membership] = acc[order.customer.membership] || [];
+acc[order.customer.membership].push(order) 
+return acc
+ } ,{})
+ console.log(membership);
+ 
 // - **Step 3**: For each membership type, calculate the total spend and the average spend per order.
+const membershipType = data.reduce((acc,order)=>
+  {acc[order.customer.membership] = acc[order.customer.membership] || [];
+(acc[order.customer.membership].push((order.items.reduce((sum,product)=>sum + product.price * product.quantity - product.discount,0)).reduce((sum,cost)=> sum+cost,0)))
+return acc
+ } ,{})
+
+ console.log(membershipType);
 
 // ---
 
